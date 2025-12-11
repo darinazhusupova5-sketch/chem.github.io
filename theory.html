@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Теория — Виртуальная лаборатория по химии</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+      line-height: 1.7;
+      color: #2c3e50;
+      background-color: #f8f9fa;
+    }
+    .container {
+      width: 90%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      background: #0d3b66;
+      color: white;
+      padding: 15px 0;
+      margin-bottom: 30px;
+    }
+    header .container { display: flex; justify-content: space-between; align-items: center; }
+    header a { color: white; text-decoration: none; font-weight: bold; }
+    header a:hover { color: #2a9d8f; }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 25px;
+      color: #0d3b66;
+      text-align: center;
+    }
+    .topic {
+      background: white;
+      border-radius: 8px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .topic h2 {
+      color: #0d3b66;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .topic h2 i { color: #2a9d8f; }
+    .topic p {
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+    .btn {
+      display: inline-block;
+      background: #2a9d8f;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .btn:hover { background: #1e7a6d; }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #777;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .topic h2 { font-size: 1.3rem; }
+      .container { padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <a href="index.html"><i class="fas fa-arrow-left"></i> Вернуться на главную</a>
+      <span>Теоретический раздел</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Теоретические основы лабораторных работ</h1>
+
+    <!-- Тема 1: Титрование -->
+    <div class="topic">
+      <h2><i class="fas fa-tint"></i> Кислотно-основное титрование</h2>
+      <p>
+        Кислотно-основное титрование — метод количественного анализа, основанный на реакции нейтрализации. 
+        При титровании слабой кислоты сильным основанием (например, CH₃COOH + NaOH) в растворе устанавливается 
+        буферная система, описываемая уравнением Гендерсона–Гассельбаха:
+      </p>
+      <p style="text-align: center; font-style: italic; background: #f1f8f7; padding: 8px; border-radius: 4px;">
+        pH = pK<sub>a</sub> + log([A⁻]/[HA])
+      </p>
+      <p>
+        В точке эквивалентности весь слабый электролит превращён в соль, подвергающуюся гидролизу, 
+        поэтому pH > 7. Скачок титрования зависит от константы кислотности: чем слабее кислота (выше pK<sub>a</sub>), 
+        тем менее выражен скачок.
+      </p>
+      <a href="titration_compare.html" class="btn">Перейти к симуляции</a>
+    </div>
+
+    <!-- Тема 2: Электрохимия -->
+    <div class="topic">
+      <h2><i class="fas fa-bolt"></i> Электрохимия и уравнение Нернста</h2>
+      <p>
+        ЭДС гальванического элемента определяется разностью потенциалов электродов. 
+        Для нестандартных условий используется уравнение Нернста:
+      </p>
+      <p style="text-align: center; font-style: italic; background: #f1f8f7; padding: 8px; border-radius: 4px;">
+        E = E⁰ + (RT/nF) · ln([Ox]/[Red]) ≈ E⁰ + (0.059/n) · log([Ox]/[Red]) при 25°C
+      </p>
+      <p>
+        Здесь E⁰ — стандартный электродный потенциал, n — число электронов, 
+        [Ox] и [Red] — активности окисленной и восстановленной форм. 
+        При электролизе масса вещества на электроде подчиняется законам Фарадея.
+      </p>
+      <a href="galvanic_cell.html" class="btn">Перейти к симуляции</a>
+    </div>
+
+    <!-- Тема 3: Химическая кинетика -->
+    <div class="topic">
+      <h2><i class="fas fa-fire"></i> Химическая кинетика</h2>
+      <p>
+        Скорость химической реакции зависит от концентрации реагентов, температуры и наличия катализатора. 
+        Для реакции aA + bB → продукты, скорость выражается как:
+      </p>
+      <p style="text-align: center; font-style: italic; background: #f1f8f7; padding: 8px; border-radius: 4px;">
+        v = k · [A]<sup>m</sup> · [B]<sup>n</sup>
+      </p>
+      <p>
+        Порядок реакции (m + n) определяется экспериментально. При постоянной температуре 
+        константа скорости k связана с энергией активации уравнением Аррениуса.
+      </p>
+      <a href="#" class="btn" style="background:#aaa; cursor:not-allowed;">Симуляция в разработке</a>
+    </div>
+
+  </div>
+
+  <footer>
+    Виртуальная лаборатория по химии • Кафедра общей химии, 2025
+  </footer>
+
+</body>
+</html>

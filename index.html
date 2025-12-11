@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Виртуальная лаборатория по химии</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Общие стили */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    /* Шапка */
+    header {
+      background-color: #0d3b66;
+      color: white;
+      padding: 15px 0;
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+    .logo span { color: #2a9d8f; }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover { color: #2a9d8f; }
+
+    /* Hero */
+    .hero {
+      background: white;
+      padding: 60px 0;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+      color: #0d3b66;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto 25px;
+      color: #555;
+    }
+    .btn {
+      display: inline-block;
+      background: #2a9d8f;
+      color: white;
+      padding: 12px 28px;
+      margin: 8px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .btn:hover { background: #1e7a6d; }
+
+    /* Лаборатории */
+    .labs {
+      padding: 50px 0;
+      background: white;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 35px;
+      color: #0d3b66;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 25px 20px;
+      text-align: center;
+      transition: box-shadow 0.3s;
+    }
+    .card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+    .card i {
+      font-size: 2.2rem;
+      color: #0d3b66;
+      margin-bottom: 15px;
+    }
+    .card h3 { margin-bottom: 12px; color: #0d3b66; }
+    .card p { font-size: 0.95rem; color: #666; }
+
+    /* Преимущества */
+    .benefits {
+      padding: 50px 0;
+      background: #f0f7fa;
+    }
+    .benefits-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 900px;
+      margin: 30px auto 0;
+    }
+    .benefit-item {
+      background: white;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      color: #0d3b66;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    /* Демо */
+    .demo {
+      padding: 50px 0;
+      background: white;
+      text-align: center;
+    }
+    .demo-box {
+      background: #0d3b66;
+      color: white;
+      padding: 40px;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 800px;
+    }
+    .demo-box p { font-style: italic; }
+
+    /* Подвал */
+    footer {
+      background: #0a2a4a;
+      color: #ccc;
+      padding: 25px 0;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    footer a { color: #2a9d8f; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      .header-content { flex-direction: column; gap: 15px; text-align: center; }
+      nav ul { flex-wrap: wrap; justify-content: center; }
+      .hero h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Шапка -->
+  <header>
+    <div class="container header-content">
+      <div class="logo">Виртуальная <span>лаборатория</span></div>
+      <nav>
+        <ul>
+          <li><a href="#">Главная</a></li>
+          <li><a href="#labs">Лаборатории</a></li>
+          <li><a href="#">Теория</a></li>
+          <li><a href="#">Методички</a></li>
+          <li><a href="#">Поддержка</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Выполняйте лабораторные работы по химии онлайн</h1>
+      <p>Безопасно, точно и в любое время — специально для студентов химических и инженерных специальностей.</p>
+      <a href="#labs" class="btn"><i class="fas fa-flask"></i> Перейти к лабораторным работам</a>
+      <a href="#" class="btn" style="background:#5e60ce;"><i class="fas fa-book"></i> Теория</a>
+    </div>
+  </section>
+
+  <!-- Лаборатории -->
+  <section class="labs" id="labs">
+    <div class="container">
+      <h2 class="section-title">Разделы лабораторных работ</h2>
+      <div class="cards">
+        <div class="card">
+          <i class="fas fa-bolt"></i>
+          <h3>Электрохимия</h3>
+          <p>Гальванические элементы, электролиз, законы Фарадея, поляризация</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-tint"></i>
+          <h3>Титрование</h3>
+          <p>Кривые титрования, буферные растворы, выбор индикаторов</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-fire"></i>
+          <h3>Кинетика</h3>
+          <p>Скорость реакции, влияние концентрации, температуры, катализаторов</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-balance-scale"></i>
+          <h3>Равновесие</h3>
+          <p>Константы, ионные равновесия, смещение по Ле Шателье</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Преимущества -->
+  <section class="benefits">
+    <div class="container">
+      <h2 class="section-title">Почему выбирают нашу лабораторию?</h2>
+      <div class="benefits-list">
+        <div class="benefit-item">🛡️ Безопасность</div>
+        <div class="benefit-item">🌍 Доступность 24/7</div>
+        <div class="benefit-item">📐 Идеальная точность</div>
+        <div class="benefit-item">⚡ Мгновенная проверка</div>
+        <div class="benefit-item">💸 Экономия ресурсов</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Демо -->
+  <section class="demo">
+    <div class="container">
+      <h2 class="section-title">Как это выглядит?</h2>
+      <div class="demo-box">
+        <p>«Интерфейс лабораторной работы по титрованию. Вы задаёте концентрации — система строит кривую и рассчитывает pH в реальном времени.»</p>
+        <a href="titration_compare.html" class="btn" style="margin-top:15px; background:#f4a261; color:#0d3b66;">
+          <i class="fas fa-chart-line"></i> Попробовать демо
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Подвал -->
+  <footer>
+    <div class="container">
+      Кафедра общей и физической химии • ВУЗ имени А.Н. Авторского<br>
+      Контакт: <a href="mailto:chem-lab@university.edu">chem-lab@university.edu</a> • © 2025
+    </div>
+  </footer>
+
+</body>
+</html>
