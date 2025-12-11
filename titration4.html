@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title>Виртуальное титрование — полная версия</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #e3f2fd;
+      overflow: hidden;
+      touch-action: none;
+    }
+    .lab {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: #ffffff;
+    }
+    h1 {
+      text-align: center;
+      padding: 15px;
+      background: #005792;
+      color: white;
+      font-size: 1.4rem;
+    }
+    #pipette {
+      position: absolute;
+      top: 60px;
+      left: 120px;
+      width: 32px;
+      height: 100px;
+      background: #e0e0e0;
+      border: 2px solid #555;
+      border-radius: 8px;
+      cursor: grab;
+      z-index: 100;
+      user-select: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    #pipette::after {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 24px;
+      background: #bbb;
+      border-radius: 0 0 4px 4px;
+    }
+    .flask {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 170px;
+      z-index: 10;
+    }
+    .flask-body {
+      position: absolute;
+      bottom: 0;
+      width: 150px;
+      height: 120px;
+      background: #f9f9f9;
+      border: 2px solid #333;
+      border-radius: 50% 50% 15% 15%;
+    }
+    .flask-liquid {
+      position: absolute;
+      bottom: 2px;
+      width: 146px;
+      height: 75px;
+      background: #e0f7fa;
+      border-radius: 50% 50% 15% 15%;
+      transition: background 0.6s, height 0.2s;
+    }
+    .flask-neck {
+      position: absolute;
+      top: 0;
+      left: 60px;
+      width: 30px;
+      height: 50px;
+      background: #f9f9f9;
+      border: 2px solid #333;
+      border-bottom: none;
+    }
+    #drop {
+      position: absolute;
+      width: 8px;
+      height: 12px;
+      background: #bbdefb;
+      border-radius: 50%;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .panel {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: #e8f5e9;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .status-box {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #fff8e1;
+      padding: 12px;
+      border-radius: 8px;
+      min-width: 190px;
+      text-align: center;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .instructions {
+      position: absolute;
+      top: 90px;
+      right: 20px;
+      background: #e3f2fd;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      max-width: 220px;
+    }
+    .btn {
+      margin-top: 10px;
+      padding: 6px 14px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn:hover { background: #0056b3; }
+    .btn-report {
+      background: #4CAF50;
+      margin-left: 10px;
+    }
+    .btn-report:hover { background: #388E3C; }
+  </style>
+</head>
+<body>
+
+<div class="lab">
+  <h1>🧪 Виртуальное титрование</h1>
+  
+  <div id="pipette"></div>
+  <div id="drop"></div>
+
+  <div class="flask">
+    <div class="flask-neck"></div>
+    <div class="flask-body"></div>
+    <div class="flask-liquid" id="flaskLiquid"></div>
+  </div>
+
+  <div class="status-box" id="status">Добавлено: 0.0 мл</div>
+
+  <div class="instructions">
+    <strong>Инструкция:</strong><br>
+    • Перетащите пипетку мышью или пальцем<br>
+    • Наведите на колбу<br>
+    • <strong>Кликните или коснитесь</strong> — добавить 0.1 мл
+  </div>
+
+  <div class="panel">
+    <p><strong>Задача:</strong> Определите концентрацию 10 мл HCl, титруя 0.100 М NaOH.<br>
+    Индикатор — фенолфталеин. Точка эквивалентности ≈ 8.7 мл.</p>
+    <button class="btn" onclick="reset()">🔄 Сбросить</button>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfX9sZvVZqRjv4Y3mW7Q6uVxHcJfT2yL8nKpQjR7bN3W4Z5aA/viewform?usp=sf_link" 
+       target="_blank" class="btn btn-report">📤 Отправить отчёт</a>
+  </div>
+</div>
+
+<!-- Встроенный звук капли (base64, короткий "plink") -->
+<audio id="dropSound" preload="auto">
+  <source src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAA" type="audio/wav">
+</audio>
+
+<script>
+  // --- Настройки ---
+  const endpointVolume = 8.7; // мл до точки эквивалентности
+  const flaskVolume = 10.0;   // мл кислоты
+  const naohConc = 0.100;     // М
+
+  // --- Элементы DOM ---
+  const pipette = document.getElementById('pipette');
+  const dropEl = document.getElementById('drop');
+  const flask = document.querySelector('.flask');
+  const flaskLiquid = document.getElementById('flaskLiquid');
+  const statusEl = document.getElementById('status');
+  const audio = document.getElementById('dropSound');
+
+  // --- Состояние ---
+  let addedNaOH = 0;
+  let isDragging = false;
+  let startX, startY, pipetteX, pipetteY;
+
+  // --- Обработка мыши и тача ---
+  function startDrag(clientX, clientY) {
+    isDragging = true;
+    pipette.style.cursor = 'grabbing';
+    const rect = pipette.getBoundingClientRect();
+    startX = clientX;
+    startY = clientY;
+    pipetteX = rect.left;
+    pipetteY = rect.top;
+  }
+
+  function movePipette(clientX, clientY) {
+    if (!isDragging) return;
+    const dx = clientX - startX;
+    const dy = clientY - startY;
+    pipette.style.left = (pipetteX + dx) + 'px';
+    pipette.style.top = (pipetteY + dy) + 'px';
+  }
+
+  function endDrag() {
+    if (isDragging) {
+      isDragging = false;
+      pipette.style.cursor = 'grab';
+    }
+  }
+
+  // События мыши
+  pipette.addEventListener('mousedown', (e) => {
+    startDrag(e.clientX, e.clientY);
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', (e) => movePipette(e.clientX, e.clientY));
+  document.addEventListener('mouseup', endDrag);
+
+  // События тача (для планшетов/телефонов)
+  pipette.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    startDrag(touch.clientX, touch.clientY);
+    e.preventDefault();
+  });
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      movePipette(touch.clientX, touch.clientY);
+      e.preventDefault();
+    }
+  });
+  document.addEventListener('touchend', endDrag);
+
+  // --- Добавление капли ---
+  function addDrop() {
+    if (addedNaOH >= 10.0) return;
+
+    // Воспроизводим звук
+    audio.currentTime = 0;
+    audio.play().catch(e => console.log("Звук отключен в браузере"));
+
+    // Анимация капли
+    const pipetteRect = pipette.getBoundingClientRect();
+    const flaskRect = flask.getBoundingClientRect();
+    const dropX = pipetteRect.left + pipetteRect.width / 2 - 4;
+    const dropY = pipetteRect.bottom;
+
+    dropEl.style.left = dropX + 'px';
+    dropEl.style.top = dropY + 'px';
+    dropEl.style.opacity = '1';
+    dropEl.style.transition = 'none';
+
+    // Анимация падения
+    setTimeout(() => {
+      dropEl.style.transition = 'top 0.4s cubic-bezier(0.3, 1, 0.6, 1)';
+      dropEl.style.top = (flaskRect.top + 30) + 'px';
+      dropEl.style.opacity = '0';
+    }, 50);
+
+    // Обновляем объём
+    addedNaOH += 0.1;
+    updateView();
+  }
+
+  // Проверка пересечения с колбой
+  function isPipetteOverFlask() {
+    const p = pipette.getBoundingClientRect();
+    const f = flask.getBoundingClientRect();
+    return p.right > f.left && p.left < f.right && p.bottom > f.top && p.top < f.bottom;
+  }
+
+  // Обработка клика/тача
+  function handleClick() {
+    if (isDragging) return;
+    if (isPipetteOverFlask()) {
+      addDrop();
+    }
+  }
+
+  document.addEventListener('click', handleClick);
+  document.addEventListener('touchend', (e) => {
+    if (!isDragging) handleClick();
+  });
+
+  // --- Обновление интерфейса ---
+  function updateView() {
+    if (addedNaOH >= endpointVolume) {
+      flaskLiquid.style.background = '#f8bbd0';
+      const c_hcl = (naohConc * addedNaOH / flaskVolume).toFixed(3);
+      statusEl.innerHTML = `✅ Точка достигнута!<br>NaOH: ${addedNaOH.toFixed(1)} мл<br>C<sub>HCl</sub> = ${c_hcl} М`;
+    } else {
+      flaskLiquid.style.background = '#e0f7fa';
+      statusEl.textContent = `Добавлено: ${addedNaOH.toFixed(1)} мл`;
+    }
+  }
+
+  // --- Сброс ---
+  function reset() {
+    addedNaOH = 0;
+    pipette.style.left = '120px';
+    pipette.style.top = '60px';
+    dropEl.style.opacity = '0';
+    updateView();
+  }
+
+  // Инициализация
+  updateView();
+</script>
+
+</body>
+</html>
